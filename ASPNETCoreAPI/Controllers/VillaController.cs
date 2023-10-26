@@ -1,6 +1,6 @@
 ﻿using ASPNETCoreAPI.Data;
-using ASPNETCoreAPI.Models;
 using ASPNETCoreAPI.Models.Dto;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ASPNETCoreAPI.Controllers
@@ -63,6 +63,7 @@ namespace ASPNETCoreAPI.Controllers
             VillaStore.villaList.Remove(villa);
             return Ok();
         }
+
         [HttpPut("{id:int}", Name = "UpdateVilla")]
         public IActionResult UpdateVilla(int id, [FromBody]VillaDTO villaDTO)
         {
@@ -74,6 +75,26 @@ namespace ASPNETCoreAPI.Controllers
             villa.Name = villaDTO.Name;
             villa.Occupancy = villaDTO.Occupancy;   
             villa.Sqft = villaDTO.Sqft;
+            return Ok();
+        }
+
+        [HttpPatch("{id:int}", Name = "UpdatePartialVilla")]
+        public IActionResult UpdatePartialVilla(int id, JsonPatchDocument<VillaDTO> patchDto)
+        {
+            if (patchDto == null || id == 0)
+            {
+                return BadRequest();
+            }
+            var villa = VillaStore.villaList.FirstOrDefault(u => u.Id == id);
+            if(villa == null)
+            {
+                return BadRequest();
+            }
+            patchDto.ApplyTo(villa, ModelState);
+            if(!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
             return Ok();
         }
     }
