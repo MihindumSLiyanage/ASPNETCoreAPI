@@ -15,5 +15,11 @@ namespace ASPNETCoreAPI.Controllers
         {
             return VillaStore.villaList;
         }
+
+        [HttpGet("{id:int}")]
+        public VillaDTO GetVillasById(int id)
+        {
+            return VillaStore.villaList.FirstOrDefault(u=>u.Id==id);
+        }
     }
-}
+} 
