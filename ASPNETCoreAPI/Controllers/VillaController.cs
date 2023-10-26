@@ -3,8 +3,7 @@
 namespace ASPNETCoreAPI.Controllers
 {
     [ApiController]
-    //[Route("api/[controller]")]
-    [Route("api/villa")]
+    [Route("api/[controller]")]
     public class VillaController : ControllerBase
     {
         public VillaController()
