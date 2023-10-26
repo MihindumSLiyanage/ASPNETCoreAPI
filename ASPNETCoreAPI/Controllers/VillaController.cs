@@ -10,9 +10,17 @@ namespace ASPNETCoreAPI.Controllers
     [Route("api/villa")]
     public class VillaController : ControllerBase
     {
+        public readonly ILogger<VillaController> _logger;
+
+        public VillaController(ILogger<VillaController> logger)
+        {
+            _logger = logger;
+        }
+
         [HttpGet]
         public ActionResult<IEnumerable<VillaDTO>> GetVillas()
         {
+            _logger.LogInformation("Getting All Villas");
             return Ok(VillaStore.villaList);
         }
 
@@ -22,6 +30,7 @@ namespace ASPNETCoreAPI.Controllers
         {
             if (id == 0)
             {
+                _logger.LogError("Getting one Villas with an id "+id);
                 return BadRequest();
             }
             var villa = VillaStore.villaList.FirstOrDefault(u => u.Id == id);
