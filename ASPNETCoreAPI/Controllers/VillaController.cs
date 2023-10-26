@@ -63,5 +63,18 @@ namespace ASPNETCoreAPI.Controllers
             VillaStore.villaList.Remove(villa);
             return Ok();
         }
+        [HttpPut("{id:int}", Name = "UpdateVilla")]
+        public IActionResult UpdateVilla(int id, [FromBody]VillaDTO villaDTO)
+        {
+            if(villaDTO == null || id != villaDTO.Id)
+            {
+                return BadRequest();
+            }
+            var villa = VillaStore.villaList.FirstOrDefault(u => u.Id == id);
+            villa.Name = villaDTO.Name;
+            villa.Occupancy = villaDTO.Occupancy;   
+            villa.Sqft = villaDTO.Sqft;
+            return Ok();
+        }
     }
 } 
