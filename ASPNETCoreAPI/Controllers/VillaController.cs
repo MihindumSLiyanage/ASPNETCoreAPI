@@ -11,15 +11,24 @@ namespace ASPNETCoreAPI.Controllers
     public class VillaController : ControllerBase
     {
         [HttpGet]
-        public IEnumerable<VillaDTO> GetVillas()
+        public ActionResult<IEnumerable<VillaDTO>> GetVillas()
         {
-            return VillaStore.villaList;
+            return Ok(VillaStore.villaList);
         }
 
         [HttpGet("{id:int}")]
-        public VillaDTO GetVillasById(int id)
+        public ActionResult<VillaDTO> GetVillasById(int id)
         {
-            return VillaStore.villaList.FirstOrDefault(u=>u.Id==id);
+            if(id == 0)
+            {
+                return BadRequest();
+            }
+            var villa = VillaStore.villaList.FirstOrDefault(u => u.Id == id);
+            if(villa == null)
+            {
+                return NotFound();
+            }
+            return Ok();
         }
     }
 } 
